@@ -7,3 +7,7 @@ _site
 _config.gh-pages.yml
 
 Gemfile.lock
+
+
+# notpad++ backup
+nppBackup
