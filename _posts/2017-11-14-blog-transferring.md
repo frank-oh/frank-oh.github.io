@@ -1,8 +1,9 @@
 ---
 layout:     post
-title:      test
+title:      Github Page Blog Installation
+date:       2017-11-14 14:15:14
 summary:    윈도우에 지킬을 사용해 깃헙 페이지 블로그 설치하기
-categories: jekyll pixyll 깃헙
+categories: 블로그 jekyll pixyll
 ---
 
 # 윈도우 사용자의 깃헙 페이지 블로그 설치기
@@ -119,4 +120,37 @@ $ jekyll serve --watch
 ![]({{ site.url }}/images/pixyll_initial.png)
 
 
+## 자신의 블로그에 맞춰 바꿀 부분 바꾸고 첫번째 포스팅 올리기
+
+(이 내용은 pixyll에만 해당하는 부분이 있을 수 있다.)
+
+- `about.md`의 헤더에 있는 yaml에서 `About pixyll` 제목을 바꾸자.
+- `contact.md`의 헤더에 있는 제목을 바꾸자.
+
+### 첫번째 포스팅 작성하기
+
+마크다운으로 포스팅을 작성한다. 현재 여러분이 보고 있는 이 포스트가 바로 내 첫번째 포스트다. 포스트 위치는 `_posts` 아래이다.
+
+맨 앞부분엔 헤더를 둬야 한다(두지 않아도 관계 없지만 제목 등을 지정하려면 헤더를 두는게 낫다).
+
+```yaml
+---
+layout:     post
+title:      test
+summary:    윈도우에 지킬을 사용해 깃헙 페이지 블로그 설치하기
+categories: jekyll pixyll 깃헙
+---
+```
+
+크게 두가지 문제가 있다.
+
+#### 이미지 삽입
+
+글 안에서 이미지를 사용할 때 문제가 있다. `{{site.url}}/images/이미지이름`으로 이미지를 지정하면 기트허브 페이지나 지킬 서버에서는 정상적으로 화면을 볼 수 있다.
+
+#### `categories`에 한글 카테코리를 넣은 경우의 경로 문제
+
+`categories`에 `jekyll pixyll 깃헙`과 같이 카테고리를 지정하면 파일 경로가 `https://frank-oh.github.io/jekyll/pixyll/깃헙/날짜/파일명/`처럼 잡히는데, 중간에 있는 한글 경로를 로컬 지킬 서버가 제대로 서비스를 못 해준다. 다행히 깃헙에 `push`하고 나서 보면 깃헙 페이지에서는 제대로 보이므로 한글 카테고리를 지정한 경우 확인이 필요하면 깃헙 페이지에 올려서 확인하라.
+
+몇가지 변경하고 싶은 부분이 있지만 일단 오늘은 여기까지로 마치자.
 
