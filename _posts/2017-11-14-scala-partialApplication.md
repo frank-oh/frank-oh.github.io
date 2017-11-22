@@ -13,7 +13,7 @@ The concept of partial function is not so huge for Scala, and you can become fam
 
 ## Definition of partial function
 
-Mathematically, a partial function is a mapping whose value is defined on just part of its domain. For example, if we have to sets `X = {1,2,3,4}`, `Y = {A,B,C}`, the mapping `(1,A),(2,B),(3,C)` is a partial function because it does not any function value defined when x = 4. Sometimes partial function is also called as *partially defined function*. The concept itself can be thought as a generalisation of the concept of function.
+Mathematically, a partial function is a mapping whose value is defined on just part of its domain. For example, if we have to sets `X = {1,2,3,4}`, `Y = {A,B,C}`, the mapping `(1,A),(2,B),(3,C)` is a partial function because it does not have any function value when x = 4. Sometimes partial function is also called as *partially defined function*. The concept itself can be thought as a generalisation of the concept of function.
 
 In scala, a `PartialFunction` is also a `Function`. So we can use `PartialFunction` instead of `Function`. You can use `PartialFunction` wherever you can use a `Function`.
 
