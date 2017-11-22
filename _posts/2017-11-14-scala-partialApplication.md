@@ -6,16 +6,16 @@ summary:    Learning Scala by terms - Partial Function
 categories: FP terms scala
 ---
 
-Anyone whe starts to learn Scala(or other functional programming language) would have some difficulties with the jargons the FP people are using. I want to explain Scala features based on those terms used. The first one is *Partial Function*.
+Anyone who starts to learn Scala(or other functional programming language) would have some difficulties with the jargons the FP people are using. I want to explain Scala features based on those terms used. The first one is *Partial Function*.
 
-The concept of partial function is not so huge for Scala, and you can become familiier with the concepts by knowing the definition and usage of partial functions.
+The concept of partial function is not so huge for Scala, and you can become familiar with the concepts by knowing the definition and usage of partial functions.
 
 
 ## Definition of partial function
 
-Mathematically, a partial function is a mapping whose value is defined on just part of its domain. For example, if we have to sets `X = {1,2,3,4}`, `Y = {A,B,C}`, the mapping `(1,A),(2,B),(3,C)` is a partial function because it does not any function value defined when x = 4. Sometimes partial function is also called as *partially defined function*. The conecpt itself can be thought as a generalisation of the concept of function.
+Mathematically, a partial function is a mapping whose value is defined on just part of its domain. For example, if we have to sets `X = {1,2,3,4}`, `Y = {A,B,C}`, the mapping `(1,A),(2,B),(3,C)` is a partial function because it does not any function value defined when x = 4. Sometimes partial function is also called as *partially defined function*. The concept itself can be thought as a generalisation of the concept of function.
 
-In scala, a `PartialFunction` is also a `Function. So we can use `PartialFunction` instead of `Function`. You can use `PartialFunction` wherever you can use a `Function`.
+In scala, a `PartialFunction` is also a `Function`. So we can use `PartialFunction` instead of `Function`. You can use `PartialFunction` wherever you can use a `Function`.
 
 Every `PartialFunction` should provide the `isDefinedAt(value)` method. This method returns `true` iff(if and only if) the function value is defined at `value`.
 
@@ -26,7 +26,7 @@ What can we do if we have some function which can make abnormal result. How can 
 1. Throw an exception. Period.
 2. Use some special value to describe the abnormal situation. For example we can use values of `Option` or `Either` type to distinguish normal return and abnormal one. In Java you might use the `null` to represent the abnormal return value. But  that is not recommended.
 
-In Java you must use `throws` clause to express the exceptions your function may raise. But in Scala you don't have to(We have `@throws` annotation for this purpose, but if you don't want to use `@throws` you may not). So in Scala it is recommended to use types such as `Option`, `Either`, or `Try`. Everytime you see those types from the function signature, you can immediatly know that the function can return some special value for exceptional cases.
+In Java you must use `throws` clause to express the exceptions your function may raise. But in Scala you don't have to(We have `@throws` annotation for this purpose, but if you don't want to use `@throws` you may not). So in Scala it is recommended to use types such as `Option`, `Either`, or `Try`. Every time you see those types from the function signature, you can immediately know that the function can return some special value for exceptional cases.
 
 But if you have a function that can work on some specific values, how can you describe that function in your program? The possible options are:
 
@@ -34,14 +34,14 @@ But if you have a function that can work on some specific values, how can you de
 2. Return some special value describing the argument error.
 3. Make some `PartialFunction`. Before calling that `PartialFunction`, you need to call `isDefinedAt` on that function to check whether you can get right return value or not. If `isDefinedAt` returns `true`, you can call the `PartialFunction` without concerning about any exceptional situations.
 
-The first option is somewhat traditional in Java. The second option is not recommended because you need to check every function return and you cannot seperate the normal flow from the abnormal flow. Using the third option the reader of your program can know the function is partial function by checking the function's type.
+The first option is somewhat traditional in Java. The second option is not recommended because you need to check every function return and you cannot separate the normal flow from the abnormal flow. Using the third option the reader of your program can know the function is partial function by checking the function's type.
 
 One of the advantages in using the `PartialFunction` is we can freely compose the partial function to form a new partial function. We have two predefined composition functions in `PartialFunction[A]`:
 
 - `def andThen[C](k: (B) ⇒ C): PartialFunction[A, C]`
 - `def orElse[A1 <: A, B1 >: B](that: PartialFunction[A1, B1]): PartialFunction[A1, B1]`
 
-`andThen` applies the partial function(referred by `this`) only if the input is valid(by using `isDefinedAt`). And apply the result to function received by `k` argument. The composed function has the same domain as the original function(`this`). But the return value will be the composition of k and `this`.
+`andThen` applies the partial function (referred by `this`) only if the input is valid(by using `isDefinedAt`). And apply the result to function received by `k` argument. The composed function has the same domain as the original function(`this`). But the return value will be the composition of k and `this`.
 
 `orElse` returns the result of applying the input to the original function(`this`), but if `this` is not defined at the input value `orElse` check the `that` function's `isDefinedAt` for the input value. And call `that` if `that` is defined at the input value. In effect, `orElse` unions the domains of the two functions with `this` some precedence. The result function will be defined at the union of domain of `this` and `that`.
 
@@ -51,13 +51,13 @@ The contract is:
 
 > If a function is a `PartialFunction`, it should provide `isDefinedAt`. And if the return value of `f.isDefinedAt(x)` is `true` for a `PartialFunction` `f`, `f(x)` should return normal value
 
-But the compiler cannot force a `PartialFunction` to keep those contract. So the programmer need to be careful to keep the contract, providing correct implementions of both `isDefinedAt()` and `apply()`. Then the use of the `PartialFunction` can check `isDefinedAt()` before calling the function.
+But the compiler cannot force a `PartialFunction` to keep those contract. So the programmer need to be careful to keep the contract, providing correct implementations of both `isDefinedAt()` and `apply()`. Then the use of the `PartialFunction` can check `isDefinedAt()` before calling the function.
 
 ## Examples
 
 ### Simple Example
 
-Let's check an example. In finance, *Rule of 72* gives you a convient way to calculate how long an investment(or debt) will take to double using some fixed interest rate by compounding.
+Let's check an example. In finance, *Rule of 72* gives you a convenient way to calculate how long an investment(or debt) will take to double using some fixed interest rate by compounding.
 
 ```scala
 // Rule of 72 calculation
@@ -150,7 +150,7 @@ Many Scala collections are implementing `PartialFunction`. I will just check the
 
 #### `Map[K,+V]`
 
-As the name implies, `Map` is a mapping from keys to values. So inherently it is very similiar to function. And if the key value set of a `Map` is finite, the `Map` can be considered as a `PartialFunction`. So `Map` has the `andThen` and `orElse` and also other methods from the `PartialFunction`:
+As the name implies, `Map` is a mapping from keys to values. So inherently it is very similar to function. And if the key value set of a `Map` is finite, the `Map` can be considered as a `PartialFunction`. So `Map` has the `andThen` and `orElse` and also other methods from the `PartialFunction`:
 
 - `def andThen[C](k: (B) ⇒ C): PartialFunction[A, C]`: Composes this partial function with a transformation function that gets applied to results of this partial function.
 - `def applyOrElse[A1 <: A, B1 >: B](x: A1, default: (A1) ⇒ B1): B1`: Applies this partial function to the given argument when it is contained in the function domain.
@@ -166,7 +166,7 @@ Moreover there are some other methods as well:
 
 ### `receive` of `Actor`
 
-Except the collections, the most famous `PartialFunction` in Scala would be the `receive` of an `Actor`. An `Actor` can receive any message, the `ActorSystem` should know whether the `Actor` can process the message or not. If you check the [scaladoc of Akka actor](https://doc.akka.io/api/akka/current/akka/actor/Actor.html), you may notice:
+Except the collections, the most famous `PartialFunction` in Scala would be the `receive` method of an `Actor`. An `Actor` can receive any message, the `ActorSystem` should know whether the `Actor` can process the message or not. If you check the [scaladoc of Akka actor](https://doc.akka.io/api/akka/current/akka/actor/Actor.html), you may notice:
 
 - `type Receive = PartialFunction[Any, Unit]`
 - `abstract def receive: Actor.Receive` : Scala API: This defines the initial actor behavior, it must return a partial function with the actor logic.
@@ -178,7 +178,7 @@ Here, the type of `receive` is `PartialFunction[Any,Unit]`. So the `ActorSystem`
 If you check [Scala `Parser` API doc](https://static.javadoc.io/org.scala-lang.modules/scala-parser-combinators_2.12/1.0.6/scala/util/parsing/combinator/Parsers$Parser.html), you can find:
 
 - `def ^?[U](f: PartialFunction[T, U]): Parser[U]` : `p ^? f` succeeds if `p` succeeds AND `f` is defined at the result of `p`; in that case, it returns `f` applied to the result of `p`.
-- `def ^?[U](f: PartialFunction[T, U], error: (T) ⇒ String): Parser[U]` : `p ^? (f, error)` succeeds if `p` succeeds AND `f` is defined at the result of `p`; in that case, it returns f applied to the result of `p`. If `f` is not applicable, `error`(the result of `p`) should explain why.
+- `def ^?[U](f: PartialFunction[T, U], error: (T) ⇒ String): Parser[U]` : `p ^? (f, error)` succeeds if `p` succeeds AND `f` is defined at the result of `p`; in that case, it returns f applied to the result of `p`. If `f` is not applicable, `error` (the result of `p`) should explain why.
 
 ## Three ways to declare a `PartialFunction`
 
@@ -360,7 +360,7 @@ If you analyse the compiler output, you may notice the difference between the un
 
 #### abbreviated `match` form: `case` clauses
 
-And in the form we used `val z: PartialFunction[Int, String] = ((x: Int) => x match { ... }`, the `x` parameter does nothing but a boilerplate for defining a lambda. So Scala permits programmers use the `match` expression without providing the only explicit parameter used. To use this shorter form, you only need to use the `case` parts, by omitting the lambda header(parameter and `=>`) and the `x match`, as below:
+And in the form we used `val z: PartialFunction[Int, String] = ((x: Int) => x match { ... }`, the `x` parameter does nothing but a boilerplate for defining a lambda. So Scala permits programmers use the `match` expression without providing the only explicit parameter used. To use this shorter form, you only need to use the `case` parts, by omitting the parameter, `=>`) and `x match`, as below:
 
 ```scala
 val z2:PartialFunction[Int,String] = {
@@ -371,7 +371,7 @@ val z2:PartialFunction[Int,String] = {
 println(z2.isDefinedAt(x))
 ```
 
-If you use this abbreviated form instaed of the original lamdba in `match.scala` you can get the same result bytecode. Those case block can used as a `PartialFunction`. And because a `PartialFunction` is also a derived class of `Function`, you can use the `case` block form wherever you need a lambda or a function. But you should be careful because it can raise the `MatchError` if the input does not match anyone of the `case`s.
+If you use this abbreviated form instead of the original lambda in `match.scala` you can get the same result bytecode. Those case block can used as a `PartialFunction`. And because a `PartialFunction` is also a derived class of `Function`, you can use the `case` block form wherever you need a lambda or a function. But you should be careful because it can raise the `MatchError` if the input does not match anyone of the `case`s.
 
 Because of this, you can easily pass the `case` match expression into HOF using the abbreviated form.
 
@@ -385,7 +385,7 @@ res2: List[String] = List(One, Two, Other)
 
 ### Third Style: Using Collection
 
-As I mentioned earlier in *Real Scala `PartialFunction` examples*, the scala collections provides the override methods for the `PartialFunction` trait.
+As I mentioned earlier in *Real Scala `PartialFunction` examples*, the Scala collections provides the override methods for the `PartialFunction` trait.
 
 Let's consider `List`, `Map`, `Array`:
 
@@ -427,7 +427,7 @@ java.lang.ArrayIndexOutOfBoundsException: -1
   ... 32 elided
 ```
 
-What is the common characteristics of all the element getting operations(in reality, that operation is implemented by the `apply(i)` method by the Scala convention)?
+What is the common characteristics of all the element getting operations (in reality, that operation is implemented by the `apply(i)` method by the Scala convention)?
 
 - If `i` is greater or equal to `0` and `i` is less than the number of elements, the operation returns the element at that position. 
 - Otherwise, the operation throws `IndexOutOfBoundsException` or `ArrayIndexOutOfBoundsException`.
@@ -438,7 +438,7 @@ Similarly, for `Map` the operation `apply(key)` provides:
 - Otherwise, it throws `NoSuchElementException`.
 
 
-Did you realize something familiar we've alread seen? Yes! That is basically same as the `PartialFunction`. So Scala collections can mix in the `PartialFunction`:
+Did you realize something familiar we've already seen? Yes! That is basically same as the `PartialFunction`. So Scala collections mix in the `PartialFunction`:
 
 ```scala
 scala> family.isDefinedAt(100)
@@ -451,7 +451,7 @@ scala> arr.isDefinedAt(Int.MaxValue)
 res14: Boolean = false
 ```
 
-So one of the most simple way to define a `PartialFunction` without using `case` block is making a `Map`. You may use `List` or `Array` for providing a `PartialFunction` with consecutive integers from 0 to some number as its domain, but that is very limited usage. So using `Map` is much powerful than other collections.
+So, one of the most simple way to define a `PartialFunction` without using `case` block is making a `Map`. You may use `List` or `Array` for providing a `PartialFunction` with consecutive integers from 0 to some number as its domain, but that is very limited usage. Because of that, using `Map` is much powerful than other collections.
 
 ```scala
 scala> val y:PartialFunction[Int, String] = Map( 1->"One", 2->"Two" )
